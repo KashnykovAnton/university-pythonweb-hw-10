@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.repository.contacts import ContactRepository
+from src.repositories.contacts_repository import ContactRepository
 from src.schemas.contacts import ContactSchema, ContactUpdateSchema
 
 

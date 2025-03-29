@@ -47,3 +47,43 @@ no_upcoming_birthdays = {
     "en": "No upcoming birthdays in the next 7 days",
     "ua": "Немає майбутніх днів народження протягом наступних 7 днів",
 }
+
+username_schema = {
+    "en": "Username",
+    "ua": "Ім'я користувача",
+}
+
+password_schema = {
+    "en": "Password",
+    "ua": "Пароль",
+}
+
+authenticate_wrong_user = {
+    "en": "Incorrect username or password",
+    "ua": "Неправильне ім'я користувача або пароль",
+}
+
+user_exists = {
+    "en": "User already exists",
+    "ua": "Користувач вже існує",
+}
+
+invalid_token = {
+    "en": "Token wrong",
+    "ua": "Неправильний токен",
+}
+
+revoked_token = {
+    "en": "Token revoked",
+    "ua": "Токен відкликано",
+}
+
+validate_credentials = {
+    "en": "Could not validate credentials",
+    "ua": "Не вдалося перевірити облікові дані",
+}
+
+invalid_refresh_token = {
+    "en": "Invalid refresh token",
+    "ua": "Неправильний токен оновлення",
+}
