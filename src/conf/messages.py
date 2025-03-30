@@ -63,9 +63,19 @@ authenticate_wrong_user = {
     "ua": "Неправильне ім'я користувача або пароль",
 }
 
+authentificate_email_not_confirmed = {
+    "en": "Email is not confirmed",
+    "ua": "Email не підтверджено",
+}
+
 user_exists = {
     "en": "User already exists",
     "ua": "Користувач вже існує",
+}
+
+mail_exists = {
+    "en": "Email already exists",
+    "ua": "Email вже існує",
 }
 
 invalid_token = {
@@ -86,4 +96,45 @@ validate_credentials = {
 invalid_refresh_token = {
     "en": "Invalid refresh token",
     "ua": "Неправильний токен оновлення",
+}
+
+requests_limit = {
+    "en": "Requests limit exceeded. Try again later.",
+    "ua": "Перевищено ліміт запитів. Спробуйте пізніше.",
+}
+
+role_access_info = {
+    "en": "Insufficient access rights",
+    "ua": "Недостатньо прав доступу",
+}
+
+welcome_messages = {
+    "moderator": {
+        "en": "Welcome, {username}! This is a moderator-only route",
+        "ua": "Вітаємо, {username}! Це маршрут для модераторів та адміністраторів",
+    },
+    "admin": {
+        "en": "Welcome, {username}! This is an administrative route",
+        "ua": "Вітаємо, {username}! Це адміністративний маршрут",
+    },
+}
+
+email_already_confirmed = {
+    "en": "Your email is already confirmed",
+    "ua": "Ваша електронна пошта вже підтверджена",
+}
+
+email_confirmed = {
+    "en": "Email confirmed",
+    "ua": "Електронна пошта підтверджена",
+}
+
+email_confirm_request = {
+    "en": "Check your email to confirm",
+    "ua": "Перевірте свою електронну пошту для підтвердження",
+}
+
+invalid_token = {
+    "en": "Wrong token for email confirmation",
+    "ua": "Неправильний токен для підтвердження електронної пошти",
 }

@@ -9,6 +9,7 @@ from fastapi import Depends, HTTPException, status
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
+from libgravatar import Gravatar
 
 from src.conf.config import settings
 from src.conf import messages
@@ -27,7 +28,7 @@ class AuthService:
         self.user_repository = UserRepository(self.db)
         self.refresh_token_repository = RefreshTokenRepository(self.db)
 
-    def _hash_password(self, password: str) -> str:  # noqa
+    def _hash_password(self, password: str) -> str:
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password.encode(), salt)
         return hashed_password.decode()
@@ -48,6 +49,12 @@ class AuthService:
                 detail=messages.authenticate_wrong_user.get("ua"),
             )
 
+        if not user.confirmed:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=messages.authentificate_email_not_confirmed.get("ua"),
+            )
+
         if not self._verify_password(password, user.hash_password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -62,8 +69,22 @@ class AuthService:
                 status_code=status.HTTP_409_CONFLICT,
                 detail=messages.user_exists.get("ua"),
             )
+        if await self.user_repository.get_user_by_email(str(user_data.email)):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=messages.mail_exists.get("ua"),
+            )
+        avatar = None
+        try:
+            g = Gravatar(user_data.email)
+            avatar = g.get_image()
+        except Exception as e:
+            print(e)
+
         hashed_password = self._hash_password(user_data.password)
-        user = await self.user_repository.create_user(user_data, hashed_password)
+        user = await self.user_repository.create_user(
+            user_data, hashed_password, avatar
+        )
         return user
 
     def create_access_token(self, username: str) -> str:
