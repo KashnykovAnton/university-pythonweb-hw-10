@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: docker-contacts
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/migrations
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d contacts_docker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file: .env.docker
+    environment:
+      - DB_URL=postgresql+asyncpg://postgres:docker-contacts@postgres:5432/contacts_docker
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - ./migrations:/app/migrations
+    command: >
+      sh -c "alembic upgrade head &&
+      python -m sync_databases &&
+      uvicorn main:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  postgres_data:
+  redis_data:
